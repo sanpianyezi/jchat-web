@@ -96,9 +96,9 @@ localhost:3000
 
 ### 自我改造说明
 * 1.调整首页自动登录（配置默认的管理员）
-jchat-web-master\src\app\pages\login\login.component.ts 文件
 
-第一步：页面初始化后自动登录
+
+第一步：页面初始化后自动登录(jchat-web-master\src\app\pages\login\login.component.ts 文件)
 ```
     public ngOnInit() {
         // 创建JIM 对象，退出登录后重新创建对象
@@ -142,7 +142,7 @@ jchat-web-master\src\app\pages\login\login.component.ts 文件
     }
 ```    
     
-    第二步:配置默认的用户名密码跳转到对话框
+    第二步:配置默认的用户名密码跳转到对话框(jchat-web-master\src\app\pages\login\login.component.ts 文件)
     
 ```
     // 点击登陆、keyup.enter登陆、keyup, change判断button是否可用
@@ -177,4 +177,12 @@ jchat-web-master\src\app\pages\login\login.component.ts 文件
             }
         });
     }
+   ``` 
+   
+       
+    第三步:把登录页面图形界面隐藏(jchat-web-master\src\app\pages\login\login.component.html 文件)
+    
+```
+    // 第一行 添加样式 
+    <div class="login-wrap" style="display:none">
    ``` 
