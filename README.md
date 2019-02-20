@@ -99,6 +99,7 @@ localhost:3000
 jchat-web-master\src\app\pages\login\login.component.ts 文件
 
 第一步：页面初始化后自动登录
+```
     public ngOnInit() {
         // 创建JIM 对象，退出登录后重新创建对象
         global.JIM = new JMessage();
@@ -139,9 +140,11 @@ jchat-web-master\src\app\pages\login\login.component.ts 文件
             // pass
         });
     }
-    
+```    
     
     第二步:配置默认的用户名密码跳转到对话框
+    
+```
     // 点击登陆、keyup.enter登陆、keyup, change判断button是否可用
     private login(event) {
 		
@@ -174,4 +177,4 @@ jchat-web-master\src\app\pages\login\login.component.ts 文件
             }
         });
     }
-    
+   ``` 
