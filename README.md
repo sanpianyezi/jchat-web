@@ -91,3 +91,87 @@ localhost:3000
 ### JMessage 文档
 
 * [JMessage web 开发指南](https://docs.jiguang.cn/jmessage/client/im_sdk_js_v2/)
+
+
+
+### 自我改造说明
+* 1.调整首页自动登录（配置默认的管理员）
+jchat-web-master\src\app\pages\login\login.component.ts 文件
+
+第一步：页面初始化后自动登录
+    public ngOnInit() {
+        // 创建JIM 对象，退出登录后重新创建对象
+        global.JIM = new JMessage();
+        if (this.username !== '' && this.password !== '') {
+            this.isButtonAvailableAction();
+        }
+        // JIM 初始化
+        this.store$.dispatch({
+            type: mainAction.jimInit,
+            payload: null
+        });
+        this.loginStream$ = this.store$.select((state) => {
+            const loginState = state['loginReducer'];
+            switch (loginState.actionType) {
+                case loginAction.loginSuccess:
+                    this.loginSuccess(loginState);
+                    break;
+                case loginAction.isButtonAvailableAction:
+                    this.isButtonAvailable = loginState.isButtonAvailable;
+                    break;
+                case loginAction.loginFailed:
+
+                case loginAction.emptyTip:
+                    if (!loginState.isLoginSuccess) {
+                        this.loginTip = loginState.loginTip;
+                        this.loginLoading = false;
+                    }
+                    break;
+                case mainAction.jimInitSuccess:
+                    this.jimInitSuccess();
+					//【配置】自动登录
+					this.login("undefined");
+                    break;
+                default:
+            }
+            return state;
+        }).subscribe((state) => {
+            // pass
+        });
+    }
+    
+    
+    第二步:配置默认的用户名密码跳转到对话框
+    // 点击登陆、keyup.enter登陆、keyup, change判断button是否可用
+    private login(event) {
+		
+		//【配置】设置默认登录的用户名密码
+		this.username = "admin";
+		this.password = "admin";
+		this.isButtonAvailable = true;
+		
+		
+        let password;
+        if (this.rememberPassword) {
+            password = this.rememberPassword;
+            this.isButtonAvailable = true;
+        } else {
+            password = md5(this.password);
+        }
+        if (!this.isButtonAvailable) {
+            return;
+        }
+        this.loginLoading = true;
+        this.store$.dispatch({
+            type: loginAction.login,
+            payload: {
+                username: this.username,
+                password,
+                md5: true,
+                isButtonAvailable: this.isButtonAvailable,
+                event,
+                loginRemember: this.loginRemember
+            }
+        });
+    }
+    
